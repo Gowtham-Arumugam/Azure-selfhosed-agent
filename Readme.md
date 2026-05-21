@@ -1,2 +1,2 @@
 # Terraform code to provision VM in azure and register it as selfhosted agent for Azure DevOps
- 
+ ## Note: This project does not stores states files and it does not contails any backend, so destroy has to done manally in azure portal
