@@ -1,0 +1,46 @@
+#cloud-config
+
+package_update: true
+package_upgrade: true
+
+packages:
+  - curl
+  - wget
+  - tar
+  - gzip
+  - nginx
+
+
+runcmd:
+  - mkdir -p /opt/azagent
+  - cd /opt/azagent
+
+  # Download Azure DevOps agent
+  - wget -q https://download.agent.dev.azure.com/agent/4.273.0/vsts-agent-linux-x64-4.273.0.tar.gz
+
+  # Extract package
+  - tar zxf vsts-agent-linux-x64-4.273.0.tar.gz
+
+  # Create agent user
+  - useradd -m -d /home/azagent -s /bin/bash azagent || true
+  - chown -R azagent:azagent /opt/azagent
+
+  # Configure agent unattended
+  - |
+    sudo -u azagent bash -c '
+    cd /opt/azagent && \
+    ./config.sh \
+      --unattended \
+      --url ${organization_url} \
+      --auth pat \
+      --token ${pat} \
+      --pool "Default" \
+      --agent "$(hostname)" \
+      --work "_work" \
+      --replace \
+      --acceptTeeEula
+    '
+
+  # Install and start service
+  - cd /opt/azagent && ./svc.sh install azagent
+  - cd /opt/azagent && ./svc.sh start
