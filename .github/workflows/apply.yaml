@@ -1,0 +1,23 @@
+name: terraform apply
+on: workflow_dispatch
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+            TF_VAR_azure_devops_pat: ${{ secrets.AZURE_DEVOPS_PAT }}
+            TF_VAR_organization_url: ${{ secrets.ORGANIZATION_URL }}
+            TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
+            TF_VAR_admin_username: ${{ vars.ADMIN_USERNAME }}
