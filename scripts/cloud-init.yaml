@@ -35,7 +35,7 @@ runcmd:
       --auth pat \
       --token ${pat} \
       --pool "Default" \
-      --agent "$(hostname)" \
+      --agent "terraform-agent" \
       --work "_work" \
       --replace \
       --acceptTeeEula
