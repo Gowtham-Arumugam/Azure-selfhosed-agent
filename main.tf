@@ -26,17 +26,10 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Static"
     private_ip_address            = "10.1.0.10"
-    public_ip_address_id          = azurerm_public_ip.publicIP.id
+    #public_ip_address_id          = azurerm_public_ip.publicIP.id
   }
 }
-resource "azurerm_public_ip" "publicIP" {
-  name                = "public_IP"
-  location            = azurerm_resource_group.RG1.location
-  resource_group_name = azurerm_resource_group.RG1.name
-  sku                 = "Standard"
-  allocation_method   = "Static"
-  depends_on          = [azurerm_resource_group.RG1]
-}
+
 resource "azurerm_network_security_group" "nsg" {
   name                = "nsg1"
   resource_group_name = azurerm_resource_group.RG1.name
